@@ -1,0 +1,124 @@
+package exp2_s4_grupo10;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class exp2_s4_grupo10 {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        boolean continuarCompra = true;
+
+        do {
+            System.out.println("=== Menú Principal ===");
+            System.out.println("1. Comprar entrada.");
+            System.out.println("2. Salir.");
+            System.out.print("Seleccione una opción: ");
+            int opcion = scanner.nextInt();
+
+            switch (opcion) {
+                case 1:
+                    comprarEntrada(scanner);
+                    break;
+                case 2:
+                    continuarCompra = false;
+                    break;
+                default:
+                    System.out.println("Opción inválida. Por favor, seleccione nuevamente.");
+            }
+        } while (continuarCompra);
+        
+        System.out.println("Gracias por utilizar el sistema de venta de entradas del Teatro Moro.");
+    }
+
+    public static void comprarEntrada(Scanner scanner) {
+        double total = 0;
+
+        do {
+            boolean entradaValida = false;
+            String zona = "";
+            int edad = 0;
+
+            // Solicitar ubicación del asiento
+            do {
+                System.out.println("Plano del Teatro:");
+                System.out.println("Zona A: $100");
+                System.out.println("Zona B: $80");
+                System.out.println("Zona C: $60");
+                System.out.print("Seleccione la zona del asiento (A, B o C): ");
+                zona = scanner.next().toUpperCase();
+
+                if (zona.equals("A") || zona.equals("B") || zona.equals("C")) {
+                    entradaValida = true;
+                } else {
+                    System.out.println("Zona inválida. Selecciona A, B o C.");
+                }
+            } while (!entradaValida);
+
+            // Solicitar edad del usuario
+            do {
+                try {
+                    System.out.print("Ingrese su edad: ");
+                    edad = scanner.nextInt();
+                    entradaValida = true;
+                } catch (InputMismatchException e) {
+                    System.out.println("Opción inválida. Por favor, ingrese un número válido para la edad.");
+                    scanner.next(); // Limpiar el buffer del scanner
+                }
+            } while (!entradaValida);
+
+            // Calcular precio base de la entrada
+            double precioBase;
+            switch (zona) {
+                case "A":
+                    precioBase = 100;
+                    break;
+                case "B":
+                    precioBase = 80;
+                    break;
+                case "C":
+                    precioBase = 60;
+                    break;
+                default:
+                    // Esto no debería ocurrir si el código está correctamente implementado
+                    precioBase = 0;
+                    break;
+            }
+
+            // Aplicar descuento según la edad
+            double descuento = 0;
+            if (edad < 18) {
+                descuento = 0.1; // 10% de descuento para estudiantes
+            } else if (edad >= 65) {
+                descuento = 0.15; // 15% de descuento para personas de la tercera edad
+            }
+
+            // Calcular precio final de la entrada
+            double precioFinal = precioBase * (1 - descuento);
+
+            // Mostrar resumen de la compra
+            System.out.println("=== Resumen de la Compra ===");
+            System.out.println("Ubicación del asiento: Zona " + zona);
+            System.out.println("Precio base de la entrada: $" + precioBase);
+            System.out.println("Descuento aplicado: " + (descuento * 100) + "%");
+            System.out.println("Precio final a pagar: $" + precioFinal);
+
+            // Agregar el precio de la entrada al total
+            total += precioFinal;
+
+            // Preguntar si desea realizar otra compra
+            System.out.print("¿Desea realizar otra compra? (Si / No): ");
+            String respuesta = scanner.next();
+            if (!respuesta.equalsIgnoreCase("Si") && !respuesta.equalsIgnoreCase("Sí")) {
+                break;
+            }
+        } while (true);
+
+        // Mostrar el total a pagar si se realizaron múltiples compras
+        if (total > 0) {
+            System.out.println("Total a pagar por todas las entradas: $" + total);
+        }
+
+        System.out.println("Gracias por utilizar el sistema de venta de entradas del Teatro Moro.");
+    }
+}
