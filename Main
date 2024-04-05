@@ -1,9 +1,9 @@
-package exp2_s4_grupo10;
+package exp2_s4_grupo25;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class exp2_s4_grupo10 {
+public class exp2_s4_grupo25 {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
